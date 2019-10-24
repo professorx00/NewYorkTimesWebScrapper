@@ -1,0 +1,37 @@
+{
+  "name": "NewYorkTimesWebScrapper",
+  "version": "1.0.0",
+  "description": "New York Times Web Scrapper",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/professorx00/NewYorkTimesWebScrapper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/professorx00/NewYorkTimesWebScrapper/issues"
+  },
+  "homepage": "https://github.com/professorx00/NewYorkTimesWebScrapper#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "bcryptjs": "^2.4.3",
+    "cheerio": "^1.0.0-rc.3",
+    "connect-flash": "^0.1.1",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "express-session": "^1.17.0",
+    "handlebars": "^4.4.5",
+    "mongoose": "^5.7.7",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  }
+}
