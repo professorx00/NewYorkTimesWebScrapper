@@ -1,4 +1,44 @@
-
-<h1 class="mt-4">Dashboard</h1>
-<p class="lead mb-3">Welcome {{user.name}}</p>
-<a href="/users/logout" class="btn btn-secondary">Logout</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="#">New York Times Article Saver</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+    aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarColor01">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/dashboard">Dashboard<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/userarticles">Saved Articles</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/getarticles">Get Articles</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/users/logout">Log Out</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <h1 class="mt-4">Dashboard</h1>
+      <p class="lead mb-3">Welcome {{name}} </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <hr>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <a href="/getarticles" class="btn btn-warning">Get Articles</a>
+    </div>
+    <div class="col-md-12" id="articles">
+      
+    </div>
+  </div>
+</div>
