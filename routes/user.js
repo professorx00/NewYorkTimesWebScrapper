@@ -4,12 +4,12 @@ const router = express.Router();
 
 //login page
 router.get('/login',(req,res)=>{
-  res.send("Login Page");
+  res.render("login",{error: null});
 })
 
 //Registration Page
 router.get('/register',(req,res)=>{
-  res.send("registration Page");
+  res.render("register",{error: null});
 })
 
 module.exports = router;
