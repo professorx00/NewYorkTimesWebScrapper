@@ -2,9 +2,8 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const db = require("../models");
 
-//User Model
-const User =  require("../models/User");
 let success=[]
 //login page
 router.get('/login',(req,res)=>{
@@ -48,7 +47,7 @@ router.post('/register', (req,res)=>{
     });
   }else {
     //Pass Validation
-    User.findOne({email:email})
+    db.User.findOne({email:email})
     .then((user)=>{
       if(user){
         errors.push("Email is already registered");

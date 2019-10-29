@@ -1,15 +1,15 @@
 {{#if articles}}
-  {{#each articles}}
-    <div class="row justify-content-center border">
-      <div class="col-md-10">
-        <h3><u>Title:</u></h3>
-        <p>{{this.title}}</p>
-        <h3>Link:</h3>
-        <p><a href=`www.newyorktimes.com/{{this.link}}`>`www.newyorktimes.com/{{this.link}}`</a></p>
-      </div>
-      <div class="col-md-2 text-center pt-5">
-            <a href="/savearticle" class="btn btn-success">Save</a>
-      </div>
-    </div>
-  {{/each}}
+{{#each articles}}
+<div class="row justify-content-center border">
+  <div class="col-md-10">
+    <h3><u>Title:</u></h3>
+    <p>{{this.title}}</p>
+    <h3>Link:</h3>
+    <p><a href={{this.link}}>{{this.link}}</a></p>
+  </div>
+  <div class="col-md-2 text-center pt-5">
+      <button type="submit" data-title ={{this.title}} data-link={{this.link}} class="btn btn-success saveBtn">Save</button>
+  </div>
+</div>
+{{/each}}
 {{/if}}

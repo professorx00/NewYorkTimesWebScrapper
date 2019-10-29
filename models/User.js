@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const UserSchema =  new mongoose.Schema({
   name:{
     type: String,
-    require: true
+    require: true,
+    unique: true
   },
   email:{
     type: String,
@@ -17,6 +19,10 @@ const UserSchema =  new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  articles:{
+    type: Schema.Types.ObjectId,
+    ref: "ScrapppedData"
+  }
 })
 
 const User = mongoose.model('User', UserSchema);

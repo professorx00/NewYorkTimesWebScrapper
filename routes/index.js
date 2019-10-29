@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const {ensureAuthenticated} = require("../config/auth");
-const ScrappedData = require('../models/ScrappedData')
-var axios = require("axios");
-var cheerio = require("cheerio");
+const db = require("../models");
+const axios = require("axios");
+const cheerio = require("cheerio");
 
 router.get('/',(req,res)=>{
   res.render("welcome",{});
@@ -25,9 +25,16 @@ router.get('/getarticles',ensureAuthenticated, (req,res)=>{
         results.push(data)
       });
     }).then(()=>{
+      console.log(results)
+      console.log("dashboard rerendering")
       res.render("dashboard",{articles:results})
     })
     .catch(err=>console.log(err))
+})
+
+router.post('/savearticle',ensureAuthenticated, (req,res)=>{
+    console.log(req.body)
+    res.send("working save article link")
 })
 
 module.exports = router;
