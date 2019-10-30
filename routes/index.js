@@ -94,6 +94,33 @@ router.post('/deleteSavedArticle',ensureAuthenticated,(req,res)=>{
   })
 })
 
+router.get('/getnote/:id',ensureAuthenticated,(req,res)=>{
+  db.Note.find({article:req.params.id,user:req.user.id},(err,data)=>{
+    res.json(data)
+  }).catch(err=>{
+    res.json(err)
+  })
+})
 
+router.get('/delNote/:id',ensureAuthenticated,(req,res)=>{
+  const id= req.params.id
+  console.log(id)
+  db.Note.deleteOne({_id:id},(data)=>{
+    console.log(data)
+  })
+})
+
+router.post('/saveNote',ensureAuthenticated,(req,res)=>{
+  db.Note.create({
+    note:req.body.note,
+    article: req.body.article,
+    user: req.user.id
+  }).then(note=>{
+    console.log(note)
+    res.json(note)
+  }).catch(err=>{
+    res.json(err)
+  })
+})
 
 module.exports = router;

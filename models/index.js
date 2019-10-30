@@ -1,4 +1,5 @@
 module.exports = {
   ScrappedData: require('./ScrappedData'),
-  User: require('./User')
+  User: require('./User'),
+  Note: require('./notes')
 }

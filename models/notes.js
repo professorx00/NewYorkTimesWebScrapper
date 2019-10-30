@@ -1,22 +1,22 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const UserSchema =  new mongoose.Schema({
+const NoteSchema =  new mongoose.Schema({
   note:{
     type: String,
     require: true,
     unique: true
   },
-  articles:[{
+  article:{
     type: Schema.Types.ObjectId,
     ref: "ScrappedData"
-  }],
-  user:[{
+  },
+  user:{
     type: Schema.Types.ObjectId,
     ref: "User"
-  }]
+  }
 })
 
-const User = mongoose.model('User', UserSchema);
+const Note = mongoose.model('Note', NoteSchema);
 
-module.exports = User;
+module.exports = Note;

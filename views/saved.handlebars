@@ -1,3 +1,41 @@
+<div class="modal" id="AddNote">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Notes:</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12" id="prevNotes">
+
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-12">
+              <form>
+                <div class="form-group">
+                  <label for="noteTextArea">New Note</label>
+                  <textarea class="form-control" id="noteTextArea" rows="3"></textarea>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="saveNoteBtn">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Nav Bar-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <a class="navbar-brand" href="#">New York Times Article Saver</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
@@ -21,6 +59,7 @@
     </ul>
   </div>
 </nav>
+<!--Contents-->
 <div class="container" id="user" data-userid={{userid}}>
   <div class="row">
     <div class="col-md-8">
@@ -39,18 +78,102 @@
     </div>
   </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
 <script>
-  $(".addNote").on("click",(event)=>{
-  const target = $(event.target)
-  console.log("addNote " + target.attr("data-id") +" "+ $("#user").attr("data-userid") )
+  $(document).ready(function () {
 
-})
 
-$(".deleteArticle").on("click",(event)=>{
-  const target = $(event.target)
-  console.log("Delete " + target.attr("data-id") +" "+ $("#user").attr("data-userid"))
-  $.post("/deleteSavedArticle",{articleid:target.attr("data-id"),userid:$("#user").attr("data-userid") },(data)=>{
-      location.reload()
+    $("#saveNoteBtn").on("click", (event) => {
+      const target = $(event.target)
+      const noteTextArea = $("#noteTextArea").val().trim()
+      const artId = target.attr("data-id")
+      const body = {
+        note: noteTextArea,
+        article: artId
+      }
+      $.post('/saveNote', body, (data) => {
+        console.log(data)
+        let all = $("<div>").addClass("floatCol").attr("id",data._id)
+        let prevNote = $("<div>").addClass("col-md-10 ");
+        let text = $("<p>").text(data.note)
+        let btnDiv = $("<div>").addClass("col-md-2 ");
+        let delNoteBtn = $("<button>")
+          .attr("data-id", data._id)
+          .addClass("btn btn-danger delNoteBtn btn-sm")
+          .text("X")
+          .on("click", (event) => {
+            console.log("delete")
+            const deltarget = $(event.target)
+            const delid = data._id
+            console.log(delid)
+            $.get(`/delNote/${delid}`, (data) => {
+              console.log(data)
+              console.log("deleted")
+              console.log(delid)
+            })
+            $(`#${delid}`).remove()
+          })
+        prevNote.append(text)
+        btnDiv.append(delNoteBtn)
+        all.append(btnDiv, prevNote)
+        $("#prevNotes").append(all)
+        $("#noteTextArea").val("");
+      })
+    })
+
+    $(".addNote").on("click", (event) => {
+      $("#prevNotes").empty();
+      $("#noteTextArea").val("");
+      const target = $(event.target)
+      $("#saveNoteBtn").attr("data-id", target.attr("data-id"))
+      $.get(`/getnote/${target.attr("data-id")}`, (data) => {
+        if (data.length !== 0) {
+          for (let x = 0; x < data.length; x++) {
+            console.log(data[x])
+            let all = $("<div>").addClass("floatCol").attr("id",data[x]._id)
+            let prevNote = $("<div>").addClass("col-md-10 ");
+            let text = $("<p>").text(data[x].note)
+            let btnDiv = $("<div>").addClass("col-md-2 ");
+            let delNoteBtn = $("<button>")
+              .attr("data-id", data[x]._id)
+              .addClass("btn btn-danger delButton btn-sm")
+              .text("X")
+              .on("click", (event) => {
+                console.log("delete")
+                const deltarget = $(event.target)
+                const delid = data[x]._id
+                console.log(delid)
+                $.get(`/delNote/${delid}`, (data) => {
+                  console.log(data)
+                  console.log("deleted")
+                })
+                $(`#${delid}`).remove()
+              })
+            prevNote.append(text)
+            btnDiv.append(delNoteBtn)
+            all.append(btnDiv, prevNote)
+            $("#prevNotes").append(all)
+          }
+        } else {
+          console.log("No Notes")
+        }
+      })
+      $('#AddNote').modal('show')
+    })
+
+
+    $(".deleteArticle").on("click", (event) => {
+      const target = $(event.target)
+      console.log("Delete " + target.attr("data-id") + " " + $("#user").attr("data-userid"))
+      $.post("/deleteSavedArticle", { articleid: target.attr("data-id"), userid: $("#user").attr("data-userid") }, (data) => {
+        location.reload()
+      })
+    })
   })
-})
 </script>
