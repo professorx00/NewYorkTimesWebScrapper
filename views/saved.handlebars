@@ -40,26 +40,10 @@
   </div>
   <div class="row mt-4">
     <div class="col-md-12">
-      {{>articles}}
+      {{>userarticles}}
     </div>
   </div>
 </div>
 <script>
-  $(".saveBtn").on("click", (event) => {
-    console.log("click save button")
-    const target = $(event.target);
-    const body = {
-      link: target.attr("data-link"),
-      titleData:target.attr("data-titleData")
-    }
-    console.log(body)
-    $.post('/savearticle', body, (err, data) => {
-      if (err) { console.log(err) }
-      console.log("sent data" + data)
-    })
-      .then(() => {
-        target.text("Saved");
-        target.removeClass("saveBtn")
-      })
-  })
+ 
 </script>

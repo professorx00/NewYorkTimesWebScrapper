@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
 const sessions = require('express-session');
+const moment = require('moment')
 
 //create appp
 const app =  express();
@@ -16,7 +17,7 @@ require("./config/passport.js")(passport);
 const db = require("./config/keys.js").MongoURI;
 
 //connect to monog
-mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true  })
+mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 .then(() => console.log("MongoDB Connected..."))
 .catch(err => console.log(err));
 //decoders
@@ -30,7 +31,7 @@ app.use(sessions({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-
+mongoose.set('useFindAndModify', false);
 // app.use((req,res,next)=>{
 
 // })
@@ -51,4 +52,4 @@ app.set("view engine", "handlebars");
 
 
 //initalization of Server
-app.listen(PORT, console.log(`Server Stated on Port ${PORT}`));
+app.listen(PORT, console.log(`Server Stated on Port ${PORT} + ${moment(Date.now()).format("MM/DD/YY hh:mm A")}`));

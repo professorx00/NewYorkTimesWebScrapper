@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
-const db = require("../models");
-
+const {ScrapppedData,User} = require("../models");
 let success=[]
 //login page
 router.get('/login',(req,res)=>{
@@ -47,7 +46,7 @@ router.post('/register', (req,res)=>{
     });
   }else {
     //Pass Validation
-    db.User.findOne({email:email})
+    User.findOne({email:email})
     .then((user)=>{
       if(user){
         errors.push("Email is already registered");
@@ -83,7 +82,7 @@ router.post('/register', (req,res)=>{
           })
         })
       }
-    });
+    }).catch(err=>console.log(err));
   }
 
 })
@@ -96,6 +95,7 @@ router.post('/login',(req,res,next)=>{
   })(req,res,next);
 });
 
+// router.get()
 
 router.get('/logout', (req,res)=>{
   req.logout();

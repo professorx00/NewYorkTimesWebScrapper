@@ -19,10 +19,10 @@ const UserSchema =  new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  articles:{
+  articles:[{
     type: Schema.Types.ObjectId,
-    ref: "ScrapppedData"
-  }
+    ref: "ScrappedData"
+  }]
 })
 
 const User = mongoose.model('User', UserSchema);
