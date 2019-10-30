@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <a class="navbar-brand" href="#">New York Times Article Saver</a>
+  <a class="navbar-brand" href="#">NY Times Article Saver</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
     aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -13,7 +13,7 @@
         <a class="nav-link" href="/userarticles">Saved Articles</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/getarticles">Get Articles</a>
+        <a class="nav-link" href="/getarticles" class="getArticles">Get Articles</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/users/logout">Log Out</a>
@@ -25,7 +25,8 @@
   <div class="row">
     <div class="col-md-8">
       <h1 class="mt-4">Dashboard</h1>
-      <p class="lead mb-3">Welcome {{name}} </p>
+      <p class="lead mb-3">Welcome {{name}}</p>
+      <h3>{{#if articleNum}}{{articleNum}} New Articles Found!{{else}}No New Articles {{/if}}</h3>
     </div>
   </div>
   <div class="row">
@@ -35,7 +36,7 @@
   </div>
   <div class="row">
     <div class="col-md-6">
-      <a href="/getarticles" class="btn btn-warning">Get Articles</a>
+      <a href="/getarticles" class="btn btn-warning getArticles" >Get Articles</a>
     </div>
   </div>
   {{#if new}}
@@ -47,14 +48,17 @@
     </div>
   </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/handlebars@4.0.5/dist/handlebars.runtime.js"></script>
 <script>
   $(document).ready(function(){
+
     $.get("/getuserdata").then(data=>{
       for(let x=0;x<data.articles.length;x++){
         $(`#${data.articles[x]}`).addClass("hide");
       }
     })
   })
+
 
   $(".saveBtn").on("click", (event) => {
     console.log("click save button")

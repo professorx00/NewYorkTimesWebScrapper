@@ -4,15 +4,14 @@ const { ensureAuthenticated } = require("../config/auth");
 const db = require("../models");
 const axios = require("axios");
 const cheerio = require("cheerio");
-
+let articles = [];
 router.get('/', (req, res) => {
   res.render("welcome", {});
 })
 
 router.get('/dashboard', ensureAuthenticated, (req, res) => {
-  let articles=[]
   db.ScrappedData.find({}).then(data => {
-    res.render("dashboard", { name: req.user.name, id: req.user.id, articles: data })
+    res.render("dashboard", { name: req.user.name, id: req.user.id, articles: data ,articleNum: articles.length})
   })
 })
 router.get('/getuserdata', ensureAuthenticated, (req, res) => {
@@ -21,8 +20,9 @@ router.get('/getuserdata', ensureAuthenticated, (req, res) => {
   })
 })
 
+
 router.get('/getarticles', ensureAuthenticated, (req, res) => {
-  let articles = [];
+  articles=[]
   axios.get("https://www.nytimes.com")
     .then((response) => {
       const $ = cheerio.load(response.data)
@@ -39,6 +39,7 @@ router.get('/getarticles', ensureAuthenticated, (req, res) => {
           }
           db.ScrappedData.find({ title: title }).then((data) => {
             if (data.length === 0) {
+              articles.push(articleObject)
               db.ScrappedData.create(articleObject)
             } else {
               data.forEach(element => {
@@ -62,14 +63,15 @@ router.get('/getarticles', ensureAuthenticated, (req, res) => {
 router.post('/savearticle', ensureAuthenticated, (req, res) => {
   db.ScrappedData.findOne({ titleData: req.body.titleData })
     .then(function (dbScrappedData) {
-      console.log(dbScrappedData.id)
-      db.User.findOne({ articles: { $in: [dbScrappedData.id] } }, { _id: req.user.id }).then(data => {
+      db.User.findOne({ articles: { $in: [dbScrappedData.id] } , _id: req.user.id }).then(data => {
+        console.log(data)
         if (!data) {
-          return db.User.findOneAndUpdate({ _id: req.user.id }, { $push: { articles: dbScrappedData.id } }, { new: true })
+          return db.User.findOneAndUpdate({ _id: req.user.id},{$push: { articles: dbScrappedData.id } }, { new: true })
             .then((dbUser) => {
               res.json(dbUser)
             })
             .catch(function (err) {
+              console.log(err)
               res.json(err);
             });
         }

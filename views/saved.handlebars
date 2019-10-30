@@ -37,7 +37,7 @@
 </div>
 <!--Nav Bar-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <a class="navbar-brand" href="#">New York Times Article Saver</a>
+  <a class="navbar-brand" href="#">NY Times Article Saver</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
     aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -84,7 +84,7 @@
   integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
   integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/handlebars@4.0.5/dist/handlebars.runtime.js"></script>
 <script>
   $(document).ready(function () {
 
@@ -99,7 +99,7 @@
       }
       $.post('/saveNote', body, (data) => {
         console.log(data)
-        let all = $("<div>").addClass("floatCol").attr("id",data._id)
+        let all = $("<div>").addClass("floatCol container red").attr("id",data._id)
         let prevNote = $("<div>").addClass("col-md-10 ");
         let text = $("<p>").text(data.note)
         let btnDiv = $("<div>").addClass("col-md-2 ");
@@ -136,7 +136,7 @@
         if (data.length !== 0) {
           for (let x = 0; x < data.length; x++) {
             console.log(data[x])
-            let all = $("<div>").addClass("floatCol").attr("id",data[x]._id)
+            let all = $("<div>").addClass("floatCol container red").attr("id",data[x]._id)
             let prevNote = $("<div>").addClass("col-md-10 ");
             let text = $("<p>").text(data[x].note)
             let btnDiv = $("<div>").addClass("col-md-2 ");
