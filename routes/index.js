@@ -10,7 +10,15 @@ router.get('/', (req, res) => {
 })
 
 router.get('/dashboard', ensureAuthenticated, (req, res) => {
-  res.render("dashboard", { name: req.user.name, id: req.user.id })
+  let articles=[]
+  db.ScrappedData.find({}).then(data => {
+    res.render("dashboard", { name: req.user.name, id: req.user.id, articles: data })
+  })
+})
+router.get('/getuserdata', ensureAuthenticated, (req, res) => {
+  db.User.findById(req.user.id).then(data=>{
+    res.json(data)
+  })
 })
 
 router.get('/getarticles', ensureAuthenticated, (req, res) => {
@@ -18,10 +26,11 @@ router.get('/getarticles', ensureAuthenticated, (req, res) => {
   axios.get("https://www.nytimes.com")
     .then((response) => {
       const $ = cheerio.load(response.data)
+      
       $("article").each(function (i, element) {
         var title = $(element).children().find("p").text();
         var titleData = $(element).children().find("p").text().replace(/\s+/g, '')
-        var link = $(element).find("a").attr("href");
+        var link = "https://www.nytimes.com"+$(element).find("a").attr("href");
         if (title !== "") {
           let articleObject = {
             title,
@@ -34,7 +43,6 @@ router.get('/getarticles', ensureAuthenticated, (req, res) => {
             } else {
               data.forEach(element => {
                 if (articleObject.title !== element.title) {
-                  console.log(element.title)
                   db.ScrappedData.create(articleObject)
                 }
               })
@@ -45,7 +53,7 @@ router.get('/getarticles', ensureAuthenticated, (req, res) => {
     }).then(() => {
       db.ScrappedData.find({}).then(data => {
         console.log("loading Articles")
-        res.render("dashboard", { articles: data })
+        res.redirect('/dashboard')
       })
     })
     .catch(err => console.log(err));
@@ -71,8 +79,21 @@ router.post('/savearticle', ensureAuthenticated, (req, res) => {
 
 router.get('/userarticles',ensureAuthenticated,(req, res) => {
   db.User.findOne({_id:req.user.id}).populate('articles').then((data)=>{
-    res.render("saved",{name:req.user.name,articles:data.articles})
+    res.render("saved",{name:req.user.name,userid:req.user.id,articles:data.articles})
   })
 })
+
+router.post('/deleteSavedArticle',ensureAuthenticated,(req,res)=>{
+  db.User.findById(req.user.id).then(data=>{
+    let array = data.articles
+    let index= array.indexOf(req.body.articleid)
+    let array2 = array.slice(0,index).concat(array.slice(index+1))
+    db.User.findOneAndUpdate({ _id: req.user.id },{ articles: array2 }, { new: true }).then((data)=>{
+      res.json(data)
+    })
+  })
+})
+
+
 
 module.exports = router;

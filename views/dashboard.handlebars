@@ -38,6 +38,9 @@
       <a href="/getarticles" class="btn btn-warning">Get Articles</a>
     </div>
   </div>
+  {{#if new}}
+  <div class="row"><h2>{{new}} Articles Found!</h2></div>
+  {{/if}}
   <div class="row mt-4">
     <div class="col-md-12">
       {{>articles}}
@@ -45,6 +48,14 @@
   </div>
 </div>
 <script>
+  $(document).ready(function(){
+    $.get("/getuserdata").then(data=>{
+      for(let x=0;x<data.articles.length;x++){
+        $(`#${data.articles[x]}`).addClass("hide");
+      }
+    })
+  })
+
   $(".saveBtn").on("click", (event) => {
     console.log("click save button")
     const target = $(event.target);
@@ -58,8 +69,8 @@
       console.log("sent data" + data)
     })
       .then(() => {
-        target.text("Saved");
-        target.removeClass("saveBtn")
+        location.reload();
+        
       })
   })
 </script>

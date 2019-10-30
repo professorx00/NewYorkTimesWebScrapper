@@ -21,21 +21,16 @@
     </ul>
   </div>
 </nav>
-<div class="container">
+<div class="container" id="user" data-userid={{userid}}>
   <div class="row">
     <div class="col-md-8">
-      <h1 class="mt-4">Dashboard</h1>
-      <p class="lead mb-3">Welcome {{name}} </p>
+      <h1 class="mt-4">Saved Articles for</h1>
+      <h2 class="lead mb-3">{{name}}</h2>
     </div>
   </div>
   <div class="row">
     <div class="col-md-12">
       <hr>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <a href="/getarticles" class="btn btn-warning">Get Articles</a>
     </div>
   </div>
   <div class="row mt-4">
@@ -45,5 +40,17 @@
   </div>
 </div>
 <script>
- 
+  $(".addNote").on("click",(event)=>{
+  const target = $(event.target)
+  console.log("addNote " + target.attr("data-id") +" "+ $("#user").attr("data-userid") )
+
+})
+
+$(".deleteArticle").on("click",(event)=>{
+  const target = $(event.target)
+  console.log("Delete " + target.attr("data-id") +" "+ $("#user").attr("data-userid"))
+  $.post("/deleteSavedArticle",{articleid:target.attr("data-id"),userid:$("#user").attr("data-userid") },(data)=>{
+      location.reload()
+  })
+})
 </script>
