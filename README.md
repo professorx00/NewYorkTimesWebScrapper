@@ -21,6 +21,11 @@ From there you can simple change the enviroment variables to have a variable cal
 
 You can start the app by typing npm run start
 
+## Demo Account
+
+User: demo@davewardjr.com
+password: WelcomeDemo
+
 ## Using the site
 
 Simple create user and login
