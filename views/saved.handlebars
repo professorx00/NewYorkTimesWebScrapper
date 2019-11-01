@@ -99,7 +99,7 @@
       }
       $.post('/saveNote', body, (data) => {
         console.log(data)
-        let all = $("<div>").addClass("floatCol container red").attr("id",data._id)
+        let all = $("<div>").addClass("floatCol container").attr("id",data._id)
         let prevNote = $("<div>").addClass("col-md-10 ");
         let text = $("<p>").text(data.note)
         let btnDiv = $("<div>").addClass("col-md-2 ");
@@ -136,7 +136,7 @@
         if (data.length !== 0) {
           for (let x = 0; x < data.length; x++) {
             console.log(data[x])
-            let all = $("<div>").addClass("floatCol container red").attr("id",data[x]._id)
+            let all = $("<div>").addClass("floatCol container ").attr("id",data[x]._id)
             let prevNote = $("<div>").addClass("col-md-10 ");
             let text = $("<p>").text(data[x].note)
             let btnDiv = $("<div>").addClass("col-md-2 ");
